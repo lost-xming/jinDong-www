@@ -13,8 +13,7 @@ export default class Product extends Component {
 		this.state = {
 			dataArr: [
 				{
-					url: require("./../../assets/product1.mp4").default,
-
+					url: "https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/product1.mp4",
 					isVideo: true,
 					position: {
 						// 上
@@ -59,8 +58,7 @@ export default class Product extends Component {
 					],
 				},
 				{
-					url: require("./../../assets/product2.mp4").default,
-
+					url: "https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/product2.mp4",
 					isVideo: true,
 					position: {
 						// 上

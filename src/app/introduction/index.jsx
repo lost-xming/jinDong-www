@@ -13,8 +13,8 @@ export default class Introduction extends Component {
 		this.state = {
 			dataArr: [
 				{
-					url: require("./../../assets/introduction1.mp4").default,
-
+					url:
+						"https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/introduction1.mp4",
 					isVideo: true,
 					position: {
 						// 上

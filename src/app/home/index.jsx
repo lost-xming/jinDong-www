@@ -28,7 +28,7 @@ export default class Home extends Component {
 						height="760"
 						loop={true}
 						muted={true}
-						url={require("./../../assets/index.mp4").default}
+						url={"https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/index.mp4"}
 						playing={true}
 						playsinline={true}
 						webkit-playsinline="true"
@@ -51,7 +51,7 @@ export default class Home extends Component {
 						height="760"
 						loop={true}
 						muted={true}
-						url={require("./../../assets/index2.mp4").default}
+						url={"https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/index2.mp4"}
 						playing={true}
 						playsinline={true}
 						webkit-playsinline="true"
