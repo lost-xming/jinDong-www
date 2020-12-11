@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import "./App.css";
+import "./App.less";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import router from "./../router/index";
-import "antd-mobile/dist/antd-mobile.css";
 export default class App extends Component {
 	static propTypes = {};
 	static defaultProps = {};

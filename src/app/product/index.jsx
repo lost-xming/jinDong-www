@@ -1,48 +1,196 @@
 import React, { Component } from "react";
-import Header from "components/header/index";
-import Footer from "components/footer/index";
-import FixedFooter from "components/fixButtom/index";
-import { WingBlank } from "antd-mobile";
-import ProductImage from "components/product/index";
-import banner2 from "./../../assets/banner2.jpg";
+import Header from "@/components/header/index";
+import Footer from "@/components/footer/index";
+import { Image, BackTop } from "antd";
+import { ArrowUpOutlined } from "@ant-design/icons";
+import VideoCom from "@/components/video/index";
 import "./index.less";
-
 export default class Product extends Component {
 	static propTypes = {};
 	static defaultProps = {};
-	state = {
-		showButtomT: false,
-	};
-	componentDidMount() {
-		this.timer = setTimeout(() => {
-			this.setState({
-				showButtomT: true,
-			});
-		}, 3000);
+	constructor(props) {
+		super(props);
+		this.state = {
+			dataArr: [
+				{
+					url: require("./../../assets/product1.mp4").default,
+
+					isVideo: true,
+					position: {
+						// 上
+						flexDirection: "column",
+						paddingTop: "30px",
+					},
+					textArr: [
+						{
+							text: "描述文字第一行",
+							textStyle: {
+								fontSize: "40px",
+							},
+						},
+						{
+							text: "描述文字第二行",
+							textStyle: {
+								fontSize: "20px",
+							},
+						},
+					],
+				},
+				{
+					url: require("./../../assets/product1.jpg").default,
+					position: {
+						// 下
+						flexDirection: "column-reverse",
+						paddingBottom: "40px",
+					},
+					textArr: [
+						{
+							text: "描述文字第一行",
+							textStyle: {
+								fontSize: "40px",
+							},
+						},
+						{
+							text: "描述文字第二行",
+							textStyle: {
+								fontSize: "20px",
+							},
+						},
+					],
+				},
+				{
+					url: require("./../../assets/product2.mp4").default,
+
+					isVideo: true,
+					position: {
+						// 上
+						flexDirection: "column",
+						paddingTop: "30px",
+					},
+					textArr: [
+						{
+							text: "描述文字第一行",
+							textStyle: {
+								fontSize: "40px",
+							},
+						},
+						{
+							text: "描述文字第二行",
+							textStyle: {
+								fontSize: "20px",
+							},
+						},
+					],
+				},
+				{
+					url: require("./../../assets/product2.jpg").default,
+					position: {
+						// 上
+						// flexDirection: "column",
+						// paddingTop: '30px',
+						// 右
+						// justifyContent: "flex-end",
+						// paddingRight: "30px",
+						// 下
+						// flexDirection: "column-reverse",
+						// paddingBottom: "40px",
+						// 左
+						paddingLeft: "40px",
+					},
+					textArr: [
+						{
+							text: "描述文字第一行",
+							textStyle: {
+								fontSize: "40px",
+							},
+						},
+						{
+							text: "描述文字第二行",
+							textStyle: {
+								fontSize: "20px",
+							},
+						},
+					],
+				},
+				{
+					url: require("./../../assets/product3.jpg").default,
+					position: {
+						// 右
+						justifyContent: "flex-end",
+						paddingRight: "30px",
+					},
+					textArr: [
+						{
+							text: "描述文字第一行",
+							textStyle: {
+								fontSize: "40px",
+							},
+						},
+						{
+							text: "描述文字第二行",
+							textStyle: {
+								fontSize: "20px",
+							},
+						},
+					],
+				},
+			],
+		};
 	}
-	componentWillUnmount() {
-		if (this.timer) {
-			clearTimeout(this.timer);
-		}
-	}
-	render() {
-		const { showButtomT } = this.state;
+	componentDidMount() {}
+	componentWillUnmount() {}
+	_renderItem = (itemNode, item, index) => {
 		return (
-			<div className="product-box">
-				<Header />
-				<WingBlank>
-					<img
-						src={banner2}
-						style={{ width: "100%", marginBottom: 30 }}
-						alt="banner"
-					/>
-					<div className="textContent">
-						<span>产品中心</span>
+			<div key={`item-${index}`} className="product-option">
+				{itemNode}
+				<div className="product-text" style={item.position}>
+					<div>
+						{item.textArr &&
+							item.textArr.map((value, ind) => {
+								return (
+									<div
+										className="product-text-value"
+										key={`value-${ind}`}
+										style={value.textStyle}
+									>
+										{value.text}
+									</div>
+								);
+							})}
 					</div>
-				</WingBlank>
-				<ProductImage />
+				</div>
+			</div>
+		);
+	};
+	render() {
+		const { dataArr } = this.state;
+		return (
+			<div
+				className="product-box"
+				id="handelDocID"
+				style={{ maxHeight: "calc(100vh)", overflowY: "auto" }}
+			>
+				<Header />
+				{dataArr.map((item, index) => {
+					if (item.isVideo) {
+						return this._renderItem(<VideoCom url={item.url} />, item, index);
+					} else {
+						return this._renderItem(
+							<Image width={"100vw"} src={item.url} />,
+							item,
+							index
+						);
+					}
+				})}
+				<BackTop
+					visibilityHeight={300}
+					target={() => document.getElementById("handelDocID")}
+				>
+					<div className="backUp">
+						<ArrowUpOutlined className="backUp-icon" />
+					</div>
+				</BackTop>
 				<Footer />
-				{showButtomT && <FixedFooter />}
 			</div>
 		);
 	}

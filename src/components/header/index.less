@@ -1,14 +1,82 @@
 .header {
-	height: 64px;
+	height: 80px;
 	display: flex;
 	align-items: center;
-	justify-content: flex-end;
-	.header-item {
-		font-size: 0.36rem;
-		font-weight: 500;
-		margin-right: 0.2rem;
+	justify-content: space-between;
+	padding: 0 40px;
+	font-size: 28px;
+	font-weight: 600;
+	margin-bottom: 10px;
+	.header-logo {
+		margin-top: -20px;
+	}
+	.header-router {
+		display: flex;
+		flex-wrap: nowrap;
+		justify-items: center;
+		cursor: pointer;
+		.header-router-item {
+			margin: 0 30px;
+			text-align: center;
+		}
+		.header-menu {
+			position: relative;
+			.header-menu-list {
+				display: none;
+				min-width: 140px;
+				position: absolute;
+				top: 40px;
+				z-index: 999;
+				.header-menu-list-item-text {
+					text-align: center;
+				}
+			}
+			.header-menu-title:hover {
+				.header-menu-list {
+					display: block;
+				}
+			}
+		}
+	}
+	.header-logo-name {
+		margin-left: 10px;
+		font-size: 40px;
+		vertical-align: middle;
 	}
 	.active {
-		color: peru;
+		color: #00adbb;
+	}
+	.header-user {
+		width: 200px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		.header-user-img {
+			margin-top: -5px;
+		}
+		.header-user-vertical {
+			border-width: 6px;
+			height: 26px;
+			border-color: black;
+			margin-right: 10px;
+		}
+		.header-user-name {
+			font-size: 24px;
+			margin-left: 10px;
+			cursor: pointer;
+		}
+		.header-user-kefu {
+			cursor: pointer;
+		}
+	}
+}
+.header-prop {
+	padding: 10px 10%;
+	.header-prop-tabs {
+		font-size: 24px;
+		.header-prop-tab-title {
+			font-size: 26px;
+			font-weight: 400;
+		}
 	}
 }

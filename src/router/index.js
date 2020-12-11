@@ -1,11 +1,23 @@
 import asyncComponent from "../components/asyncComponent";
 import Home from "../app/home/index";
-const Introduction = asyncComponent(() => {
-	return import("./../app/introduction/index");
+const Product = asyncComponent(() => {
+	return import("../app/product/index");
 });
-const Product = asyncComponent(() => import("./../app/product/index"));
-const News = asyncComponent(() => import("./../app/news/index"));
-const About = asyncComponent(() => import("./../app/about/index"));
+const Introduction = asyncComponent(() => {
+	return import("../app/introduction/index");
+});
+const Info = asyncComponent(() => {
+	return import("../app/info/index");
+});
+
+const News = asyncComponent(() => {
+	return import("../app/news/index");
+});
+
+const NewsInfo = asyncComponent(() => {
+	return import("../app/news/detail");
+});
+
 const routes = [
 	{
 		path: "/",
@@ -15,10 +27,7 @@ const routes = [
 		exact: true,
 	},
 	{
-		path: "/introduction",
-		name: "introduction",
-		title: "公司简介",
-		component: Introduction,
+		title: "顶部悬浮产品介绍",
 	},
 	{
 		path: "/product",
@@ -27,22 +36,42 @@ const routes = [
 		component: Product,
 	},
 	{
+		path: "/introduction",
+		name: "introduction",
+		title: "了解锦东",
+		component: Introduction,
+	},
+	{
+		path: "/info",
+		name: "info",
+		notRender: true,
+		component: Info,
+	},
+	{
 		path: "/news",
 		name: "news",
-		title: "服务支持",
+		notRender: true,
 		component: News,
 	},
 	{
-		path: "/about",
-		name: "about",
-		title: "联系我们",
-		component: About,
-		// routes: [
-		// 	// {
-		// 	// 	path: "/new/",
-		// 	// 	component: NewContent,
-		// 	// }
-		// ],
+		path: "/newsInfo/:id",
+		name: "newsInfo",
+		notRender: true,
+		component: NewsInfo,
+	},
+	{
+		isMenu: true,
+		title: "服务支持",
+		menus: [
+			{
+				path: "/info",
+				title: "公司简介",
+			},
+			{
+				path: "/news",
+				title: "新闻中心",
+			},
+		],
 	},
 ];
 

@@ -27,7 +27,6 @@ const ForkTsCheckerWebpackPlugin = require("react-dev-utils/ForkTsCheckerWebpack
 const typescriptFormatter = require("react-dev-utils/typescriptFormatter");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const px2rem = require("postcss-px2rem");
-
 const postcssNormalize = require("postcss-normalize");
 
 const appPackageJson = require(paths.appPackageJson);
@@ -57,12 +56,13 @@ const useTypeScript = fs.existsSync(paths.appTsConfig);
 const swSrc = paths.swSrc;
 
 // style files regexes
-const cssRegex = /\.(css)$/;
-const cssModuleRegex = /\.module\.(css)$/;
+const cssRegex = /\.css$/;
+const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 const lessRegex = /\.less$/;
 const lessModuleRegex = /\.module\.less$/;
+
 const hasJsxRuntime = (() => {
 	if (process.env.DISABLE_NEW_JSX_TRANSFORM === "true") {
 		return false;
@@ -96,7 +96,7 @@ module.exports = function (webpackEnv) {
 	const shouldUseReactRefresh = env.raw.FAST_REFRESH;
 
 	// common function to get style loaders
-	const getStyleLoaders = (cssOptions, preProcessor, lessOptions) => {
+	const getStyleLoaders = (cssOptions, preProcessor) => {
 		const loaders = [
 			isEnvDevelopment && require.resolve("style-loader"),
 			isEnvProduction && {
@@ -132,18 +132,24 @@ module.exports = function (webpackEnv) {
 						// so that it honors browserslist config in package.json
 						// which in turn let's users customize the target behavior as per their needs.
 						postcssNormalize(),
-						// 移动端配置
-						px2rem({ remUnit: 37.5 }),
+						px2rem({ remUnit: 75 }),
 					],
 					sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
 				},
 			},
-			{
-				loader: require.resolve("less-loader"),
-				options: lessOptions,
-			},
 		].filter(Boolean);
 		if (preProcessor) {
+			const optionsObj =
+				preProcessor === "less-loader"
+					? {
+							lessOptions: {
+								javascriptEnabled: true,
+								modifyVars: {
+									"primary-color": "#00ADBB",
+								},
+							},
+					  }
+					: {};
 			loaders.push(
 				{
 					loader: require.resolve("resolve-url-loader"),
@@ -155,6 +161,7 @@ module.exports = function (webpackEnv) {
 				{
 					loader: require.resolve(preProcessor),
 					options: {
+						...optionsObj,
 						sourceMap: true,
 					},
 				}
@@ -331,11 +338,9 @@ module.exports = function (webpackEnv) {
 				.map((ext) => `.${ext}`)
 				.filter((ext) => useTypeScript || !ext.includes("ts")),
 			alias: {
-				"@": path.resolve(__dirname, "../src/"),
-				components: path.resolve(__dirname, "../src/components"),
-				assets: path.resolve(__dirname, "../src/assets"),
 				// Support React Native Web
 				// https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
+				"@": paths.appSrc,
 				"react-native": "react-native-web",
 				// Allows for better profiling with ReactDevTools
 				...(isEnvProductionProfile && {
@@ -384,18 +389,18 @@ module.exports = function (webpackEnv) {
 							options: {
 								limit: imageInlineSizeLimit,
 								mimetype: "image/avif",
-								name: "[name].[hash:8].[ext]",
+								name: "static/media/[name].[hash:8].[ext]",
 							},
 						},
 						// "url" loader works like "file" loader except that it embeds assets
 						// smaller than specified limit in bytes as data URLs to avoid requests.
 						// A missing `test` is equivalent to a match.
 						{
-							test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+							test: [/\.bmp$/, /\.gif$/, /\.jpg$/, /\.jpe?g$/, /\.png$/],
 							loader: require.resolve("url-loader"),
 							options: {
 								limit: imageInlineSizeLimit,
-								name: "[name].[hash:8].[ext]",
+								name: "static/media/[name].[hash:8].[ext]",
 							},
 						},
 						// Process application JS with Babel.
@@ -497,9 +502,40 @@ module.exports = function (webpackEnv) {
 								},
 							}),
 						},
-						// Opt-in support for SASS (using .scss or .sass extensions).
-						// By default we support SASS Modules with the
-						// extensions .module.scss or .module.sass
+						{
+							test: lessRegex,
+							exclude: lessModuleRegex,
+							// options: {
+							// 	lessOptions: {
+							// 		javascriptEnabled: true,
+							// 	},
+							// },
+							use: getStyleLoaders(
+								{
+									importLoaders: 2,
+									sourceMap: isEnvProduction
+										? shouldUseSourceMap
+										: isEnvDevelopment,
+								},
+								"less-loader"
+							),
+							sideEffects: true,
+						},
+						{
+							test: lessModuleRegex,
+							use: getStyleLoaders(
+								{
+									importLoaders: 2,
+									sourceMap: isEnvProduction
+										? shouldUseSourceMap
+										: isEnvDevelopment,
+									modules: {
+										getLocalIdent: getCSSModuleLocalIdent,
+									},
+								},
+								"less-loader"
+							),
+						},
 						{
 							test: sassRegex,
 							exclude: sassModuleRegex,
@@ -535,24 +571,6 @@ module.exports = function (webpackEnv) {
 								"sass-loader"
 							),
 						},
-						{
-							test: lessRegex,
-							exclude: cssModuleRegex,
-							use: getStyleLoaders({
-								importLoaders: 1,
-								sourceMap: isEnvProduction && shouldUseSourceMap,
-							}),
-							sideEffects: true,
-						},
-						{
-							test: lessModuleRegex,
-							use: getStyleLoaders({
-								importLoaders: 1,
-								sourceMap: isEnvProduction && shouldUseSourceMap,
-								modules: true,
-								getLocalIdent: getCSSModuleLocalIdent,
-							}),
-						},
 						// "file" loader makes sure those assets get served by WebpackDevServer.
 						// When you `import` an asset, you get its (virtual) filename.
 						// In production, they would get copied to the `build` folder.
@@ -564,9 +582,14 @@ module.exports = function (webpackEnv) {
 							// its runtime that would otherwise be processed through "file" loader.
 							// Also exclude `html` and `json` extensions so they get processed
 							// by webpacks internal loaders.
-							exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
+							exclude: [
+								/\.(js|mjs|jsx|ts|tsx)$/,
+								/\.html$/,
+								/\.json$/,
+								/\.less$/,
+							],
 							options: {
-								name: "[name].[hash:8].[ext]",
+								name: "static/media/[name].[hash:8].[ext]",
 							},
 						},
 						// ** STOP ** Are you adding a new loader?
