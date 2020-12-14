@@ -24,7 +24,7 @@ export default class Home extends Component {
 			>
 				<Header />
 				<div className="index-option">
-					<VideoCom url="https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/index.mp4" />
+					<VideoCom url="https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/index3.mp4" />
 				</div>
 				<div className="index-option">
 					<Image
