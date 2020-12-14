@@ -3,6 +3,7 @@ import Header from "@/components/header/index";
 import Footer from "@/components/footer/index";
 import ReactPlayer from "react-player";
 import { Image, BackTop } from "antd";
+import VideoCom from "@/components/video/index";
 import { ArrowUpOutlined } from "@ant-design/icons";
 import "./index.less";
 export default class Home extends Component {
@@ -23,19 +24,7 @@ export default class Home extends Component {
 			>
 				<Header />
 				<div className="index-option">
-					<ReactPlayer
-						width={"100vw"}
-						height="760"
-						loop={true}
-						muted={true}
-						url={"https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/index.mp4"}
-						playing={true}
-						playsinline={true}
-						webkit-playsinline="true"
-						x5-playsinline="true"
-						x5-video-player-type="h5"
-						x5-video-player-fullscreen="true"
-					/>
+					<VideoCom url="https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/index.mp4" />
 				</div>
 				<div className="index-option">
 					<Image
@@ -46,19 +35,7 @@ export default class Home extends Component {
 					/>
 				</div>
 				<div className="index-video index-video2">
-					<ReactPlayer
-						width={"100vw"}
-						height="760"
-						loop={true}
-						muted={true}
-						url={"https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/index2.mp4"}
-						playing={true}
-						playsinline={true}
-						webkit-playsinline="true"
-						x5-playsinline="true"
-						x5-video-player-type="h5"
-						x5-video-player-fullscreen="true"
-					/>
+					<VideoCom url="https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/index2.mp4" />
 				</div>
 				<div className="index-option">
 					<Image

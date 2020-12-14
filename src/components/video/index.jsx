@@ -18,6 +18,7 @@ class Footer extends Component {
 				muted={true}
 				url={url}
 				playing={true}
+				controls={true}
 				playsinline={true}
 				webkit-playsinline="true"
 				x5-playsinline="true"
