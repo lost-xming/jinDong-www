@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import Proptypes from "prop-types";
 import { withRouter, NavLink } from "react-router-dom";
 import router from "./../../router/index";
 import { Popover, Menu, Tabs, Image, Divider, Button, Modal } from "antd";
@@ -6,14 +8,45 @@ import { RightOutlined, CustomerServiceFilled } from "@ant-design/icons";
 import "./index.less";
 const { TabPane } = Tabs;
 class Header extends Component {
-	static propTypes = {};
-	static defaultProps = {};
+	static propTypes = {
+		getData: Proptypes.func,
+	};
+	static defaultProps = {
+		getData: () => {},
+	};
 	constructor(props) {
 		super(props);
 		this.state = {
 			coKiingPath: "/",
+			data: [],
+			tabs: [],
 		};
 	}
+	componentDidMount() {
+		this.initData();
+	}
+	initData = async () => {
+		const { getData } = this.props;
+		const data = await getData();
+		router.map((item) => {
+			if (item.name === "home") {
+				item.title = data.indexName;
+			} else if (item.name === "setting") {
+				item.title = data.setting;
+			} else if (item.name === "product") {
+				item.title = data.product;
+			} else if (item.name === "introduction") {
+				item.title = data.introduction;
+			} else if (item.name === "fuwu") {
+				item.title = data.news;
+			}
+			return null;
+		});
+		this.setState({
+			tabs: data.pic || [],
+			data: router,
+		});
+	};
 	_renderRouter = (item) => {
 		const { match = {} } = this.props;
 		const { path = "" } = match;
@@ -47,51 +80,27 @@ class Header extends Component {
 		});
 	};
 	_renderPop = (item) => {
+		const { tabs } = this.state;
 		return (
 			<div className="header-router-item" key={`router-${item.title}`}>
 				<Popover
 					content={
 						<div className="header-prop" style={{ width: "100vw" }}>
 							<Tabs tabPosition="left" className="header-prop-tabs">
-								<TabPane
-									tab={
-										<div className="header-prop-tab-title">
-											互联网厨房 <RightOutlined />
-										</div>
-									}
-									key="1"
-								>
-									<Image
-										height={300}
-										src={require("./../../assets/banner1.jpg").default}
-									/>
-								</TabPane>
-								<TabPane
-									tab={
-										<div className="header-prop-tab-title">
-											互联网厨房 <RightOutlined />
-										</div>
-									}
-									key="2"
-								>
-									<Image
-										height={300}
-										src={require("./../../assets/banner1.jpg").default}
-									/>
-								</TabPane>
-								<TabPane
-									tab={
-										<div className="header-prop-tab-title">
-											互联网厨房 <RightOutlined />
-										</div>
-									}
-									key="3"
-								>
-									<Image
-										height={300}
-										src={require("./../../assets/banner1.jpg").default}
-									/>
-								</TabPane>
+								{tabs.map((item, index) => {
+									return (
+										<TabPane
+											tab={
+												<div className="header-prop-tab-title">
+													{item.title} <RightOutlined />
+												</div>
+											}
+											key={`tab-${index}`}
+										>
+											<Image height={300} src={item.url} />
+										</TabPane>
+									);
+								})}
 							</Tabs>
 						</div>
 					}
@@ -133,7 +142,7 @@ class Header extends Component {
 		);
 	};
 	render() {
-		const { coKiingPath, isModalVisible } = this.state;
+		const { coKiingPath, isModalVisible, data } = this.state;
 		return (
 			<div className="header">
 				<div className="header-logo">
@@ -146,7 +155,7 @@ class Header extends Component {
 					</Button>
 				</div>
 				<div className="header-router">
-					{router.map((item, index) => {
+					{data.map((item, index) => {
 						if (!item.notRender) {
 							if (item.path) {
 								return this._renderRouter(item);
@@ -180,5 +189,12 @@ class Header extends Component {
 		);
 	}
 }
-
-export default withRouter(Header);
+const mapDispatch = (dispatch) => {
+	return {
+		getData: dispatch.headerStore.getData,
+	};
+};
+const mapState = (state) => {
+	return {};
+};
+export default connect(mapState, mapDispatch)(withRouter(Header));

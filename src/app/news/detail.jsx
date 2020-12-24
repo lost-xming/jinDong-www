@@ -1,15 +1,22 @@
 import React, { Component } from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import { connect } from "react-redux";
+import Proptypes from "prop-types";
 import { Image, BackTop } from "antd";
 import { ArrowUpOutlined } from "@ant-design/icons";
 import "./index.less";
-export default class Info extends Component {
-	static propTypes = {};
-	static defaultProps = {};
+class NewsInfo extends Component {
+	static propTypes = {
+		getDetailData: Proptypes.func,
+	};
+	static defaultProps = {
+		getDetailData: () => {},
+	};
 	constructor(props) {
 		super(props);
 		this.state = {
+			data: {},
 			name: "Europe Street beat",
 			desc:
 				"这里是文章简介这里是文章简介这里是文章简介这里是文章简介这里是文章简介这里是文章简这里是文章简介这里是文章简介这里是文章简介介这里是文章简介",
@@ -24,16 +31,17 @@ export default class Info extends Component {
 	componentDidMount() {
 		this.initData();
 	}
-	initData = () => {
-		const { location = {} } = this.props;
+	initData = async () => {
+		const { location = {}, getDetailData } = this.props;
 		const { params = {} } = location;
 		const { id } = params;
-	};
-	onCardAction = (item) => {
-		window.open(item.href);
+		const data = await getDetailData({ id });
+		this.setState({ data });
 	};
 	render() {
-		const { name, desc, timer, content } = this.state;
+		const { data } = this.state;
+		const { info, miaoshu, name, url, timer } = data;
+		const newInfo = (info && info.split("<br  />")) || [];
 		return (
 			<div
 				className="news-box"
@@ -54,9 +62,13 @@ export default class Info extends Component {
 				<div className="news-content">
 					<div className="news-content-bg">
 						<div className="news-conten-card">
-							<div className="news-desc">{desc}</div>
-							{content.map((item, index) => {
-								return <p className="news-item-p">{item}</p>;
+							<div className="news-desc">{miaoshu}</div>
+							{newInfo.map((item, index) => {
+								return (
+									<p className="news-item-p" key={`newsinfo-=${index}`}>
+										{item}
+									</p>
+								);
 							})}
 						</div>
 					</div>
@@ -74,3 +86,13 @@ export default class Info extends Component {
 		);
 	}
 }
+
+const mapDispatch = (dispatch) => {
+	return {
+		getDetailData: dispatch.newsStore.getDetailData,
+	};
+};
+const mapState = (state) => {
+	return {};
+};
+export default connect(mapState, mapDispatch)(NewsInfo);

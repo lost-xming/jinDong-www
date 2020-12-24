@@ -28,6 +28,7 @@ const routes = [
 	},
 	{
 		title: "顶部悬浮产品介绍",
+		name: "setting",
 	},
 	{
 		path: "/product",
@@ -62,6 +63,7 @@ const routes = [
 	{
 		isMenu: true,
 		title: "服务支持",
+		name: "fuwu",
 		menus: [
 			{
 				path: "/info",

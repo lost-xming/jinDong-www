@@ -2,155 +2,181 @@ import React, { Component } from "react";
 import Header from "@/components/header/index";
 import Footer from "@/components/footer/index";
 import { Image, BackTop } from "antd";
+import { connect } from "react-redux";
+import Proptypes from "prop-types";
 import { ArrowUpOutlined } from "@ant-design/icons";
 import VideoCom from "@/components/video/index";
 import "./index.less";
-export default class Introduction extends Component {
-	static propTypes = {};
-	static defaultProps = {};
+class Introduction extends Component {
+	static propTypes = {
+		getData: Proptypes.func,
+	};
+	static defaultProps = {
+		getData: () => {},
+	};
 	constructor(props) {
 		super(props);
 		this.state = {
-			dataArr: [
-				{
-					url:
-						"https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/introduction1.mp4",
-					isVideo: true,
-					position: {
-						// 上
-						flexDirection: "column",
-						paddingTop: "30px",
-					},
-					textArr: [
-						{
-							text: "描述文字第一行",
-							textStyle: {
-								fontSize: "40px",
-							},
-						},
-						{
-							text: "描述文字第二行",
-							textStyle: {
-								fontSize: "20px",
-							},
-						},
-					],
-				},
-				{
-					url: require("./../../assets/introduction1.jpg").default,
-					position: {
-						// 下
-						flexDirection: "column-reverse",
-						paddingBottom: "40px",
-					},
-					textArr: [
-						{
-							text: "描述文字第一行",
-							textStyle: {
-								fontSize: "40px",
-							},
-						},
-						{
-							text: "描述文字第二行",
-							textStyle: {
-								fontSize: "20px",
-							},
-						},
-					],
-				},
-				{
-					url: require("./../../assets/introduction2.jpg").default,
-					position: {
-						// 上
-						// flexDirection: "column",
-						// paddingTop: '30px',
-						// 右
-						// justifyContent: "flex-end",
-						// paddingRight: "30px",
-						// 下
-						// flexDirection: "column-reverse",
-						// paddingBottom: "40px",
-						// 左
-						paddingLeft: "40px",
-					},
-					textArr: [
-						{
-							text: "描述文字第一行",
-							textStyle: {
-								fontSize: "40px",
-							},
-						},
-						{
-							text: "描述文字第二行",
-							textStyle: {
-								fontSize: "20px",
-							},
-						},
-					],
-				},
-				{
-					url: require("./../../assets/introduction3.jpg").default,
-					position: {
-						// 右
-						justifyContent: "flex-end",
-						paddingRight: "30px",
-					},
-					textArr: [
-						{
-							text: "描述文字第一行",
-							textStyle: {
-								fontSize: "40px",
-							},
-						},
-						{
-							text: "描述文字第二行",
-							textStyle: {
-								fontSize: "20px",
-							},
-						},
-					],
-				},
-				{
-					url: require("./../../assets/introduction4.jpg").default,
-					position: {
-						paddingLeft: "40px",
-					},
-					textArr: [
-						{
-							text: "描述文字第一行",
-							textStyle: {
-								fontSize: "40px",
-							},
-						},
-						{
-							text: "描述文字第二行",
-							textStyle: {
-								fontSize: "20px",
-							},
-						},
-					],
-				},
-				{
-					url: require("./../../assets/introduction5.jpg").default,
-					position: {
-						// 下
-						flexDirection: "column-reverse",
-						paddingBottom: "40px",
-					},
-					textArr: [
-						{
-							text: "描述文字",
-							textStyle: {
-								fontSize: "40px",
-							},
-						},
-					],
-				},
-			],
+			list: [],
+			// dataArr: [
+			// 	{
+			// 		url:
+			// 			"https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/introduction1.mp4",
+			// 		isVideo: true,
+			// 		position: {
+			// 			// 上
+			// 			flexDirection: "column",
+			// 			paddingTop: "30px",
+			// 		},
+			// 		textArr: [
+			// 			{
+			// 				text: "描述文字第一行",
+			// 				textStyle: {
+			// 					fontSize: "40px",
+			// 				},
+			// 			},
+			// 			{
+			// 				text: "描述文字第二行",
+			// 				textStyle: {
+			// 					fontSize: "20px",
+			// 				},
+			// 			},
+			// 		],
+			// 	},
+			// 	{
+			// 		url: require("./../../assets/introduction1.jpg").default,
+			// 		position: {
+			// 			// 下
+			// 			flexDirection: "column-reverse",
+			// 			paddingBottom: "40px",
+			// 		},
+			// 		textArr: [
+			// 			{
+			// 				text: "描述文字第一行",
+			// 				textStyle: {
+			// 					fontSize: "40px",
+			// 				},
+			// 			},
+			// 			{
+			// 				text: "描述文字第二行",
+			// 				textStyle: {
+			// 					fontSize: "20px",
+			// 				},
+			// 			},
+			// 		],
+			// 	},
+			// 	{
+			// 		url: require("./../../assets/introduction2.jpg").default,
+			// 		position: {
+			// 			// 上
+			// 			// flexDirection: "column",
+			// 			// paddingTop: '30px',
+			// 			// 右
+			// 			// justifyContent: "flex-end",
+			// 			// paddingRight: "30px",
+			// 			// 下
+			// 			// flexDirection: "column-reverse",
+			// 			// paddingBottom: "40px",
+			// 			// 左
+			// 			paddingLeft: "40px",
+			// 		},
+			// 		textArr: [
+			// 			{
+			// 				text: "描述文字第一行",
+			// 				textStyle: {
+			// 					fontSize: "40px",
+			// 				},
+			// 			},
+			// 			{
+			// 				text: "描述文字第二行",
+			// 				textStyle: {
+			// 					fontSize: "20px",
+			// 				},
+			// 			},
+			// 		],
+			// 	},
+			// 	{
+			// 		url: require("./../../assets/introduction3.jpg").default,
+			// 		position: {
+			// 			// 右
+			// 			justifyContent: "flex-end",
+			// 			paddingRight: "30px",
+			// 		},
+			// 		textArr: [
+			// 			{
+			// 				text: "描述文字第一行",
+			// 				textStyle: {
+			// 					fontSize: "40px",
+			// 				},
+			// 			},
+			// 			{
+			// 				text: "描述文字第二行",
+			// 				textStyle: {
+			// 					fontSize: "20px",
+			// 				},
+			// 			},
+			// 		],
+			// 	},
+			// 	{
+			// 		url: require("./../../assets/introduction4.jpg").default,
+			// 		position: {
+			// 			paddingLeft: "40px",
+			// 		},
+			// 		textArr: [
+			// 			{
+			// 				text: "描述文字第一行",
+			// 				textStyle: {
+			// 					fontSize: "40px",
+			// 				},
+			// 			},
+			// 			{
+			// 				text: "描述文字第二行",
+			// 				textStyle: {
+			// 					fontSize: "20px",
+			// 				},
+			// 			},
+			// 		],
+			// 	},
+			// 	{
+			// 		url: require("./../../assets/introduction5.jpg").default,
+			// 		position: {
+			// 			// 下
+			// 			flexDirection: "column-reverse",
+			// 			paddingBottom: "40px",
+			// 		},
+			// 		textArr: [
+			// 			{
+			// 				text: "描述文字",
+			// 				textStyle: {
+			// 					fontSize: "40px",
+			// 				},
+			// 			},
+			// 		],
+			// 	},
+			// ],
 		};
 	}
-	componentDidMount() {}
-	componentWillUnmount() {}
+	componentDidMount() {
+		this.initData();
+	}
+	initData = async () => {
+		const { getData } = this.props;
+		const { list } = await getData();
+		const newArr = [];
+		list.map((item) => {
+			const newItem = item[item.length - 1];
+			if (newItem.url || (newItem.response && newItem.response.data.imageUrl)) {
+				newArr.push({
+					url: newItem.url || newItem.response.data.imageUrl,
+					type: newItem.type || "image",
+				});
+			}
+			return null;
+		});
+		this.setState({
+			list: newArr,
+		});
+	};
 	_renderItem = (itemNode, item, index) => {
 		return (
 			<div key={`item-${index}`} className="introduction-option">
@@ -175,7 +201,7 @@ export default class Introduction extends Component {
 		);
 	};
 	render() {
-		const { dataArr } = this.state;
+		const { list } = this.state;
 		return (
 			<div
 				className="introduction-box"
@@ -183,8 +209,8 @@ export default class Introduction extends Component {
 				style={{ maxHeight: "calc(100vh)", overflowY: "auto" }}
 			>
 				<Header />
-				{dataArr.map((item, index) => {
-					if (item.isVideo) {
+				{list.map((item, index) => {
+					if (item.type.indexOf("video") > -1) {
 						return this._renderItem(<VideoCom url={item.url} />, item, index);
 					} else {
 						return this._renderItem(
@@ -207,3 +233,12 @@ export default class Introduction extends Component {
 		);
 	}
 }
+const mapDispatch = (dispatch) => {
+	return {
+		getData: dispatch.introductionStore.getData,
+	};
+};
+const mapState = (state) => {
+	return {};
+};
+export default connect(mapState, mapDispatch)(Introduction);

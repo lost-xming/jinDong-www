@@ -1,21 +1,48 @@
 import React, { Component } from "react";
 import Header from "@/components/header/index";
 import Footer from "@/components/footer/index";
-import ReactPlayer from "react-player";
+import { connect } from "react-redux";
+import Proptypes from "prop-types";
 import { Image, BackTop } from "antd";
 import VideoCom from "@/components/video/index";
 import { ArrowUpOutlined } from "@ant-design/icons";
 import "./index.less";
-export default class Home extends Component {
-	static propTypes = {};
-	static defaultProps = {};
+class Home extends Component {
+	static propTypes = {
+		getData: Proptypes.func,
+	};
+	static defaultProps = {
+		getData: () => {},
+	};
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			list: [],
+		};
 	}
-	componentDidMount() {}
-	componentWillUnmount() {}
+	componentDidMount() {
+		this.initData();
+	}
+	initData = async () => {
+		const { getData } = this.props;
+		const { list } = await getData();
+		const newArr = [];
+		list.map((item) => {
+			const newItem = item[item.length - 1];
+			if (newItem.url || (newItem.response && newItem.response.data.imageUrl)) {
+				newArr.push({
+					url: newItem.url || newItem.response.data.imageUrl,
+					type: newItem.type || "image",
+				});
+			}
+			return null;
+		});
+		this.setState({
+			list: newArr,
+		});
+	};
 	render() {
+		const { list } = this.state;
 		return (
 			<div
 				className="home-box"
@@ -23,70 +50,25 @@ export default class Home extends Component {
 				style={{ maxHeight: "calc(100vh)", overflowY: "auto" }}
 			>
 				<Header />
-				<div className="index-option">
-					<VideoCom url="https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/index3.mp4" />
-				</div>
-				<div className="index-option">
-					<Image
-						width={"100vw"}
-						src={`${
-							require("./../../assets/index-option1.jpg").default
-						}?${Date.now()}`}
-					/>
-				</div>
-				<div className="index-video index-video2">
-					<VideoCom url="https://jd-buc-img.oss-cn-shenzhen.aliyuncs.com/index2.mp4" />
-				</div>
-				<div className="index-option">
-					<Image
-						width={"100vw"}
-						src={`${
-							require("./../../assets/index-option2.jpg").default
-						}?${Date.now()}`}
-					/>
-				</div>
-				<div className="index-option">
-					<Image
-						width={"100vw"}
-						src={`${
-							require("./../../assets/index-option3.jpg").default
-						}?${Date.now()}`}
-					/>
-				</div>
-				<div className="index-option index-list">
-					<Image
-						className="index-list-item"
-						width={"50vw"}
-						height={"450px"}
-						src={`${
-							require("./../../assets/index-option4-1.jpg").default
-						}?${Date.now()}`}
-					/>
-					<Image
-						className="index-list-item"
-						width={"50vw"}
-						height={"450px"}
-						src={`${
-							require("./../../assets/index-option4-1.jpg").default
-						}?${Date.now()}`}
-					/>
-					<Image
-						className="index-list-item"
-						width={"50vw"}
-						height={"450px"}
-						src={`${
-							require("./../../assets/index-option4-1.jpg").default
-						}?${Date.now()}`}
-					/>
-					<Image
-						className="index-list-item"
-						width={"50vw"}
-						height={"450px"}
-						src={`${
-							require("./../../assets/index-option4-1.jpg").default
-						}?${Date.now()}`}
-					/>
-				</div>
+				{list.map((item, index) => {
+					if (item.type.indexOf("image") > -1) {
+						return (
+							<div key={`home-${index}`} className="index-option">
+								<Image width={"100vw"} src={item.url} />
+							</div>
+						);
+					}
+					if (item.type.indexOf("video") > -1) {
+						return (
+							<div
+								key={`home-${index}`}
+								className={`index-option ${index !== 0 ? "index-video2" : ""}`}
+							>
+								<VideoCom url={item.url} />
+							</div>
+						);
+					}
+				})}
 				<BackTop
 					visibilityHeight={300}
 					target={() => document.getElementById("handelDocID")}
@@ -100,3 +82,12 @@ export default class Home extends Component {
 		);
 	}
 }
+const mapDispatch = (dispatch) => {
+	return {
+		getData: dispatch.homeStore.getData,
+	};
+};
+const mapState = (state) => {
+	return {};
+};
+export default connect(mapState, mapDispatch)(Home);

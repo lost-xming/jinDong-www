@@ -1,10 +1,16 @@
 import React, { Component } from "react";
 import { Button, Image } from "antd";
+import { connect } from "react-redux";
+import Proptypes from "prop-types";
 import { withRouter } from "react-router";
 import "./index.less";
 class Footer extends Component {
-	static propTypes = {};
-	static defaultProps = {};
+	static propTypes = {
+		getData: Proptypes.func,
+	};
+	static defaultProps = {
+		getData: () => {},
+	};
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -96,6 +102,16 @@ class Footer extends Component {
 			],
 		};
 	}
+	componentDidMount() {
+		this.initData();
+	}
+	initData = async () => {
+		const { getData } = this.props;
+		const data = await getData();
+		this.setState({
+			list: data.list,
+		});
+	};
 	render() {
 		const { list } = this.state;
 		return (
@@ -105,18 +121,18 @@ class Footer extends Component {
 						return (
 							<div key={`item-${index}`} className="footer-flex-item">
 								<h3>{item.title}</h3>
-								{item.itemArr &&
-									item.itemArr.map((value, ind) => {
+								{item.arr &&
+									item.arr.map((value, ind) => {
 										return (
 											<div key={`value-${ind}`}>
 												<Button
 													type="link"
 													onClick={() => {
-														this.props.history.push(value.href);
+														this.props.history.push(value.url);
 													}}
 													className="footer-flex-item-list"
 												>
-													{value.title}
+													{value.name}
 												</Button>
 											</div>
 										);
@@ -151,4 +167,12 @@ class Footer extends Component {
 	}
 }
 
-export default withRouter(Footer);
+const mapDispatch = (dispatch) => {
+	return {
+		getData: dispatch.footerStore.getData,
+	};
+};
+const mapState = (state) => {
+	return {};
+};
+export default connect(mapState, mapDispatch)(withRouter(Footer));
