@@ -146,7 +146,7 @@ class Footer extends Component {
 						<h3>消费维权热线</h3>
 						<div>0769-22225669</div>
 						<h3>举报邮箱</h3>
-						<div>0769-22225669</div>
+						<div>jindong2020@126.com</div>
 						<h3>扫码进入锦东商城</h3>
 						<div>
 							<Image
