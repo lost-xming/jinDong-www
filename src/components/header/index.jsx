@@ -168,17 +168,15 @@ class Header extends Component {
 					})}
 				</div>
 				<div className="header-user">
-					<Image
-						className="header-user-img"
-						width={26}
-						src={require("./../../assets/icon_cokiing.png").default}
-					/>
 					<NavLink
 						key={`cokiing${coKiingPath}`}
 						to={coKiingPath}
 						className="header-coKiing"
 					>
-						<span className="header-user-name">CoKiing</span>
+						<Image
+							className="header-user-name"
+							src={require("./../../assets/to.png").default}
+						/>
 					</NavLink>
 					<Divider type="vertical" className="header-user-vertical" />
 					<div className="header-coKiing" onClick={this._renderModuleInfo}>

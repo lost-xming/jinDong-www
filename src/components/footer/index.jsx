@@ -14,92 +14,7 @@ class Footer extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			list: [
-				{
-					title: "全屋互联网家电",
-					itemArr: [
-						{
-							title: "互联网空调",
-							href: "1111",
-						},
-						{
-							title: "互联网空调",
-							href: "2222",
-						},
-						{
-							title: "互联网空调",
-							href: "3333",
-						},
-						{
-							title: "互联网空调",
-							href: "4444",
-						},
-					],
-				},
-				{
-					title: "全屋互联网家电",
-					itemArr: [
-						{
-							title: "互联网空调",
-							href: "1111",
-						},
-						{
-							title: "互联网空调",
-							href: "2222",
-						},
-						{
-							title: "互联网空调",
-							href: "3333",
-						},
-						{
-							title: "互联网空调",
-							href: "4444",
-						},
-					],
-				},
-				{
-					title: "全屋互联网家电",
-					itemArr: [
-						{
-							title: "互联网空调",
-							href: "1111",
-						},
-						{
-							title: "互联网空调",
-							href: "2222",
-						},
-						{
-							title: "互联网空调",
-							href: "3333",
-						},
-						{
-							title: "互联网空调",
-							href: "4444",
-						},
-					],
-				},
-				{
-					title: "全屋互联网家电",
-					itemArr: [
-						{
-							title: "互联网空调",
-							href: "1111",
-						},
-						{
-							title: "互联网空调",
-							href: "2222",
-						},
-						{
-							title: "互联网空调",
-							href: "3333",
-						},
-						{
-							title: "互联网空调",
-							href: "4444",
-						},
-					],
-				},
-			],
+			list: [],
 		};
 	}
 	componentDidMount() {
@@ -142,7 +57,7 @@ class Footer extends Component {
 					})}
 					<div key="item-kefu" className="footer-flex-kefu">
 						<h3>客服电话</h3>
-						<div>0769-22225669</div>
+						<div>400-9151812</div>
 						<h3>消费维权热线</h3>
 						<div>0769-22225669</div>
 						<h3>举报邮箱</h3>
