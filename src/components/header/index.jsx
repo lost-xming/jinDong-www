@@ -97,7 +97,7 @@ class Header extends Component {
 											}
 											key={`tab-${index}`}
 										>
-											<Image width={"100%"} src={item.url} />
+											<Image width={"100%"} src={item.url.url} />
 										</TabPane>
 									);
 								})}

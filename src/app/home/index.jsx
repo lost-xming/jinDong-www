@@ -26,19 +26,8 @@ class Home extends Component {
 	initData = async () => {
 		const { getData } = this.props;
 		const { list } = await getData();
-		const newArr = [];
-		list.map((item) => {
-			const newItem = item[item.length - 1];
-			if (newItem.url || (newItem.response && newItem.response.data.imageUrl)) {
-				newArr.push({
-					url: newItem.url || newItem.response.data.imageUrl.url,
-					type: newItem.type || "image",
-				});
-			}
-			return null;
-		});
 		this.setState({
-			list: newArr,
+			list,
 		});
 	};
 	render() {
@@ -51,23 +40,32 @@ class Home extends Component {
 			>
 				<Header />
 				{list.map((item, index) => {
-					if (item.type.indexOf("image") > -1) {
-						return (
-							<div key={`home-${index}`} className="index-option">
-								<Image width={"100vw"} src={item.url} />
-							</div>
-						);
-					}
-					if (item.type.indexOf("video") > -1) {
-						return (
-							<div
-								key={`home-${index}`}
-								className={`index-option ${index !== 0 ? "index-video2" : ""}`}
-							>
-								<VideoCom url={item.url} />
-							</div>
-						);
-					}
+					return (
+						<div
+							key={`home-${index}`}
+							className={`index-option ${index !== 0 ? "index-video2" : ""}`}
+						>
+							{item.map((it, i) => {
+								if (it.type.indexOf("image") > -1) {
+									return (
+										<Image
+											key={`home-${index}-item-${i}`}
+											width={"100vw"}
+											src={it.response && it.response.data.imageUrl.url}
+										/>
+									);
+								}
+								if (it.type.indexOf("video") > -1) {
+									return (
+										<VideoCom
+											key={`home-${index}-item-${i}`}
+											url={it.response && it.response.data.imageUrl.url}
+										/>
+									);
+								}
+							})}
+						</div>
+					);
 				})}
 				<BackTop
 					visibilityHeight={300}

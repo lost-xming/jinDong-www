@@ -26,44 +26,11 @@ class Product extends Component {
 	initData = async () => {
 		const { getData } = this.props;
 		const { list } = await getData();
-		const newArr = [];
-		list.map((item) => {
-			const newItem = item[item.length - 1];
-			if (newItem.url || (newItem.response && newItem.response.data.imageUrl)) {
-				newArr.push({
-					url: newItem.url || newItem.response.data.imageUrl.url,
-					type: newItem.type || "image",
-				});
-			}
-			return null;
-		});
 		this.setState({
-			list: newArr,
+			list,
 		});
 	};
-	_renderItem = (itemNode, item, index) => {
-		return (
-			<div key={`item-${index}`} className="product-option">
-				{itemNode}
-				<div className="product-text" style={item.position}>
-					<div>
-						{item.textArr &&
-							item.textArr.map((value, ind) => {
-								return (
-									<div
-										className="product-text-value"
-										key={`value-${ind}`}
-										style={value.textStyle}
-									>
-										{value.text}
-									</div>
-								);
-							})}
-					</div>
-				</div>
-			</div>
-		);
-	};
+
 	render() {
 		const { list } = this.state;
 		return (
@@ -74,15 +41,34 @@ class Product extends Component {
 			>
 				<Header />
 				{list.map((item, index) => {
-					if (item.type.indexOf("video") > -1) {
-						return this._renderItem(<VideoCom url={item.url} />, item, index);
-					} else {
-						return this._renderItem(
-							<Image width={"100vw"} src={item.url} />,
-							item,
-							index
-						);
-					}
+					return (
+						<div
+							key={`item-${index}`}
+							className={`product-option ${
+								item.length > 1 ? "product-option2" : ""
+							}`}
+						>
+							{item.map((it, i) => {
+								if (it.type.indexOf("image") > -1) {
+									return (
+										<Image
+											key={`home-${index}-item-${i}`}
+											width={`${item.length > 1 ? "50vw" : "100vw"}`}
+											src={it.response && it.response.data.imageUrl.url}
+										/>
+									);
+								}
+								if (it.type.indexOf("video") > -1) {
+									return (
+										<VideoCom
+											key={`home-${index}-item-${i}`}
+											url={it.response && it.response.data.imageUrl.url}
+										/>
+									);
+								}
+							})}
+						</div>
+					);
 				})}
 				<BackTop
 					visibilityHeight={300}
