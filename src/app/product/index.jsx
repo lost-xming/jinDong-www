@@ -34,42 +34,50 @@ class Product extends Component {
 	render() {
 		const { list } = this.state;
 		return (
-			<div
-				className="product-box"
-				id="handelDocID"
-				style={{ maxHeight: "calc(100vh)", overflowY: "auto" }}
-			>
+			<div className="product-box" id="handelDocID">
 				<Header />
-				{list.map((item, index) => {
-					return (
-						<div
-							key={`item-${index}`}
-							className={`product-option ${
-								item.length > 1 ? "product-option2" : ""
-							}`}
-						>
-							{item.map((it, i) => {
-								if (it.type.indexOf("image") > -1) {
-									return (
-										<Image
-											key={`home-${index}-item-${i}`}
-											width={`${item.length > 1 ? "50vw" : "100vw"}`}
-											src={it.response && it.response.data.imageUrl.url}
-										/>
-									);
-								}
-								if (it.type.indexOf("video") > -1) {
-									return (
-										<VideoCom
-											key={`home-${index}-item-${i}`}
-											url={it.response && it.response.data.imageUrl.url}
-										/>
-									);
-								}
-							})}
-						</div>
-					);
-				})}
+				<div className="product-content">
+					{list.map((item, index) => {
+						return (
+							<div
+								key={`item-${index}`}
+								className={`product-option ${
+									item.length > 1 ? "product-option2" : ""
+								}`}
+							>
+								{item.map((it, i) => {
+									if (it.type.indexOf("image") > -1) {
+										return (
+											<Image
+												key={`home-${index}-item-${i}`}
+												width={`${item.length > 1 ? "50%" : "100%"}`}
+												style={{
+													paddingRight:
+														item.length > 1 && i !== item.length - 1
+															? "5px"
+															: 0,
+													paddingLeft:
+														item.length > 1 && i === item.length - 1
+															? "5px"
+															: 0,
+												}}
+												src={it.response && it.response.data.imageUrl.url}
+											/>
+										);
+									}
+									if (it.type.indexOf("video") > -1) {
+										return (
+											<VideoCom
+												key={`home-${index}-item-${i}`}
+												url={it.response && it.response.data.imageUrl.url}
+											/>
+										);
+									}
+								})}
+							</div>
+						);
+					})}
+				</div>
 				<BackTop
 					visibilityHeight={300}
 					target={() => document.getElementById("handelDocID")}

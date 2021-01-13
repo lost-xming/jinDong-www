@@ -33,40 +33,49 @@ class Home extends Component {
 	render() {
 		const { list } = this.state;
 		return (
-			<div
-				className="home-box"
-				id="handelDocID"
-				style={{ maxHeight: "calc(100vh)", overflowY: "auto" }}
-			>
+			<div className="home-box" id="handelDocID">
 				<Header />
-				{list.map((item, index) => {
-					return (
-						<div
-							key={`home-${index}`}
-							className={`index-option ${index !== 0 ? "index-video2" : ""}`}
-						>
-							{item.map((it, i) => {
-								if (it.type.indexOf("image") > -1) {
-									return (
-										<Image
-											key={`home-${index}-item-${i}`}
-											width={"100vw"}
-											src={it.response && it.response.data.imageUrl.url}
-										/>
-									);
-								}
-								if (it.type.indexOf("video") > -1) {
-									return (
-										<VideoCom
-											key={`home-${index}-item-${i}`}
-											url={it.response && it.response.data.imageUrl.url}
-										/>
-									);
-								}
-							})}
-						</div>
-					);
-				})}
+				<div className="home-content">
+					{list.map((item, index) => {
+						return (
+							<div
+								key={`home-${index}`}
+								className={`index-option ${index !== 0 ? "index-video2" : ""}`}
+							>
+								{item.map((it, i) => {
+									if (it.type.indexOf("image") > -1) {
+										return (
+											<Image
+												key={`home-${index}-item-${i}`}
+												width={`${item.length > 1 ? "50%" : "100%"}`}
+												style={{
+													paddingRight:
+														item.length > 1 && i !== item.length - 1
+															? "5px"
+															: 0,
+													paddingLeft:
+														item.length > 1 && i === item.length - 1
+															? "5px"
+															: 0,
+												}}
+												src={it.response && it.response.data.imageUrl.url}
+											/>
+										);
+									}
+									if (it.type.indexOf("video") > -1) {
+										return (
+											<VideoCom
+												key={`home-${index}-item-${i}`}
+												url={it.response && it.response.data.imageUrl.url}
+											/>
+										);
+									}
+								})}
+							</div>
+						);
+					})}
+				</div>
+
 				<BackTop
 					visibilityHeight={300}
 					target={() => document.getElementById("handelDocID")}

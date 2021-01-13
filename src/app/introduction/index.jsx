@@ -209,17 +209,20 @@ class Introduction extends Component {
 				style={{ maxHeight: "calc(100vh)", overflowY: "auto" }}
 			>
 				<Header />
-				{list.map((item, index) => {
-					if (item.type.indexOf("video") > -1) {
-						return this._renderItem(<VideoCom url={item.url} />, item, index);
-					} else {
-						return this._renderItem(
-							<Image width={"100vw"} src={item.url} />,
-							item,
-							index
-						);
-					}
-				})}
+				<div className="introduction-content">
+					{list.map((item, index) => {
+						if (item.type.indexOf("video") > -1) {
+							return this._renderItem(<VideoCom url={item.url} />, item, index);
+						} else {
+							return this._renderItem(
+								<Image width={"100vw"} src={item.url} />,
+								item,
+								index
+							);
+						}
+					})}
+				</div>
+
 				<BackTop
 					visibilityHeight={300}
 					target={() => document.getElementById("handelDocID")}
