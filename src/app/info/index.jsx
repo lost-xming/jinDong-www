@@ -80,7 +80,8 @@ class Info extends Component {
 				<div className="info-bg">
 					<Image
 						width={"100vw"}
-						src={require("../../assets/info-banner.jpg").default}
+						preview={false}
+						src={require("../../assets/info-banner2.jpg").default}
 					/>
 					<h3>公司概况</h3>
 				</div>
