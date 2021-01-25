@@ -83,7 +83,7 @@ class Info extends Component {
 						preview={false}
 						src={require("../../assets/info-banner2.jpg").default}
 					/>
-					<h3>公司概况</h3>
+					{/* <h3>公司概况</h3> */}
 				</div>
 				<div className="info-content">
 					<div className="info-content-bg">
