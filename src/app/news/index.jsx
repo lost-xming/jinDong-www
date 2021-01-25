@@ -77,11 +77,11 @@ class NewsList extends Component {
 				<div className="news-bg">
 					<Image
 						width={"100vw"}
-						src={require("../../assets/info-banner.jpg").default}
+						src={require("../../assets/info-banner2.jpg").default}
 					/>
-					<div className="news-h3">
-						<h3>新闻中心</h3>
-					</div>
+				</div>
+				<div className="news-h3">
+					<h3>新闻中心</h3>
 				</div>
 				<div className="news-content">
 					<div className="news-content-bg">

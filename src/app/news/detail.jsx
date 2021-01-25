@@ -43,7 +43,7 @@ class NewsInfo extends Component {
 				<div className="news-bg">
 					<Image
 						width={"100vw"}
-						src={require("../../assets/info-banner.jpg").default}
+						src={require("../../assets/info-banner2.jpg").default}
 					/>
 					<div className="news-h3">
 						<h3>{name}</h3>
