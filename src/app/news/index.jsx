@@ -93,7 +93,7 @@ class NewsList extends Component {
 											key={`card-${index}`}
 											className="news-card-list-item"
 											hoverable
-											style={{ width: 240 }}
+											style={{ width: 240, height: 300 }}
 											onClick={() => this.onCardAction(item)}
 											cover={<img alt="card" src={item.url} />}
 										>
